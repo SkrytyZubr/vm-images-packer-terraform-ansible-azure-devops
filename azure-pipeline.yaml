@@ -7,7 +7,7 @@ pool:
 steps:
 
   ## TERRAFORM
-  - script: terraform init --backend-config backend.tfvars
+  - script: terraform init
     displayName:  Terraform init
     workingDirectory: $(Build.SourcesDirectory)/terraform
     env:
@@ -15,7 +15,6 @@ steps:
       ARM_CLIENT_SECRET: $(AZURE_SECRET)
       ARM_SUBSCRIPTION_ID: $(AZURE_SUBSCRIPTION_ID)
       ARM_TENANT_ID: $(AZURE_TENANT)
-      ARM_ACCESS_KEY: $(AZURE_ACCESS_KEY)
 
   - script: terraform plan
     displayName:  Terraform plan
@@ -25,7 +24,6 @@ steps:
       ARM_CLIENT_SECRET: $(AZURE_SECRET)
       ARM_SUBSCRIPTION_ID: $(AZURE_SUBSCRIPTION_ID)
       ARM_TENANT_ID: $(AZURE_TENANT)
-      ARM_ACCESS_KEY: $(AZURE_ACCESS_KEY)
 
   - script: terraform apply -auto-approve
     displayName:  Terraform apply
@@ -35,7 +33,6 @@ steps:
       ARM_CLIENT_SECRET: $(AZURE_SECRET)
       ARM_SUBSCRIPTION_ID: $(AZURE_SUBSCRIPTION_ID)
       ARM_TENANT_ID: $(AZURE_TENANT)
-      ARM_ACCESS_KEY: $(AZURE_ACCESS_KEY)
 
   ## ANSIBLE
   - script: pip install ansible[azure]==2.8.6
