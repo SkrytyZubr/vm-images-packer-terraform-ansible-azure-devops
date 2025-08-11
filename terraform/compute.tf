@@ -1,5 +1,5 @@
 resource "azurerm_storage_account" "stor" {
-  name = "bookstore2"
+  name = "bookstore2mc"
   location = var.location
   resource_group_name = var.resource_group_name
   account_tier = "Standard"
