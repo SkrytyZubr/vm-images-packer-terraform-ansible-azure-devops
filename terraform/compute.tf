@@ -20,7 +20,8 @@ resource "azurerm_virtual_machine" "vm" {
 
   ## USE THE CUSTOM IMAGE
   storage_image_reference {
-    id = data.azurerm_image.customngnix.id
+    id = data.azurerm_image.customnginx.id
+
   }
 
 
