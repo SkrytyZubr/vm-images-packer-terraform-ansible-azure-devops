@@ -15,7 +15,7 @@ resource "azurerm_subnet" "subnet" {
 resource "azurerm_public_ip" "pip" {
   name = "book-pip"
   location = var.location
-  resource_group_name = var.resource_group_name
+  resource_group_name = azurerm_resource_group.rg.name
   allocation_method = "Static"
   domain_name_label = "bookmcz"
 }
@@ -23,7 +23,7 @@ resource "azurerm_public_ip" "pip" {
 resource "azurerm_network_interface" "nic" {
   name = "book-nic"
   location = var.location
-  resource_group_name = var.resource_group_name
+  resource_group_name = azurerm_resource_group.rg.name
 
   ip_configuration {
     name = "bookipconfig"
@@ -36,7 +36,7 @@ resource "azurerm_network_interface" "nic" {
 resource "azurerm_network_security_group" "nsg" {
   name                = "book-nsg"
   location            = var.location
-  resource_group_name = var.resource_group_name
+  resource_group_name = azurerm_resource_group.rg.name
 
   security_rule {
     name                       = "Allow-SSH"
