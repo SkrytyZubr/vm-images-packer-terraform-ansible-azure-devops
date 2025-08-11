@@ -2,7 +2,7 @@ trigger:
   - master
 
 pool:
-  name: Default
+  name: wsl
 
 steps:
   - script: packer init $(Build.SourcesDirectory)/.pkr.hcl
