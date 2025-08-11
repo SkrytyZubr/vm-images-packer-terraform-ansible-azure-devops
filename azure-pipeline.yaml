@@ -9,7 +9,7 @@ steps:
   ## TERRAFORM
   - script: terraform init --backend-config backend.tfvars
     displayName:  Terraform init
-    workingDirectory: $(Build.SourcesDirectory)/CHAP08/terraform
+    workingDirectory: $(Build.SourcesDirectory)/terraform
     env:
       ARM_CLIENT_ID: $(AZURE_CLIENT_ID)
       ARM_CLIENT_SECRET: $(AZURE_SECRET)
@@ -19,7 +19,7 @@ steps:
 
   - script: terraform plan
     displayName:  Terraform plan
-    workingDirectory: $(Build.SourcesDirectory)/CHAP08/terraform
+    workingDirectory: $(Build.SourcesDirectory)/terraform
     env:
       ARM_CLIENT_ID: $(AZURE_CLIENT_ID)
       ARM_CLIENT_SECRET: $(AZURE_SECRET)
@@ -29,7 +29,7 @@ steps:
 
   - script: terraform apply -auto-approve
     displayName:  Terraform apply
-    workingDirectory: $(Build.SourcesDirectory)/CHAP08/terraform
+    workingDirectory: $(Build.SourcesDirectory)/terraform
     env:
       ARM_CLIENT_ID: $(AZURE_CLIENT_ID)
       ARM_CLIENT_SECRET: $(AZURE_SECRET)
@@ -43,7 +43,7 @@ steps:
 
   - script: ansible-playbook playbookdemo.yml -i inv.azure_rm.yml
     displayName:  Ansible playbook
-    workingDirectory: $(Build.SourcesDirectory)/CHAP08/ansible
+    workingDirectory: $(Build.SourcesDirectory)/ansible
     env:
       AZURE_CLIENT_ID: $(AZURE_CLIENT_ID)
       AZURE_SECRET: $(AZURE_SECRET)
