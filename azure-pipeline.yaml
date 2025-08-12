@@ -34,12 +34,21 @@ steps:
       ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
       ARM_TENANT_ID: $(ARM_TENANT_ID)
 
-  ## ANSIBLE
-  - script: pip install ansible[azure]==2.8.6
-    displayName:  Get requirements
+  ## ANSIBLE - venv
+  - script: 
+      python3 -m venv venv
+      source venv/bin/activate
+      pip install --upgrade pip
+      pip install -r requirements-azure.txt
+      pip install ansible[azure]==2.8.6
+    displayName: Get requirements
+    workingDirectory: $(Build.SourcesDirectory)/ansible
 
-  - script: ansible-playbook playbookdemo.yml -i inv.azure_rm.yml
-    displayName:  Ansible playbook
+  ## ANSIBLE - run
+  - script: 
+      source venv/bin/activate
+      ansible-playbook playbookdemo.yml -i inv.azure_rm.yml
+    displayName: Ansible playbook
     workingDirectory: $(Build.SourcesDirectory)/ansible
     env:
       AZURE_CLIENT_ID: $(ARM_CLIENT_ID)
