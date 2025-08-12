@@ -40,10 +40,9 @@ steps:
   ## ANSIBLE - venv
   - script: |
       python3 -m venv venv
-      source venv/bin/activate
-      pip install --upgrade pip
-      pip install -r requirements-azure.txt
-      pip install ansible[azure]==2.8.6
+      ./venv/bin/pip install --upgrade pip
+      ./venv/bin/pip install -r requirements-azure.txt
+      ./venv/bin/pip install "ansible[azure]==2.8.6"
     displayName: Get requirements
     workingDirectory: $(Build.SourcesDirectory)/ansible
 
