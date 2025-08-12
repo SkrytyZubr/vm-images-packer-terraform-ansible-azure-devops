@@ -38,7 +38,7 @@ steps:
       ARM_ACCESS_KEY: $(ARM_ACCESS_KEY)
 
   ## ANSIBLE - venv
-  - script: 
+  - script: |
       python3 -m venv venv
       source venv/bin/activate
       pip install --upgrade pip
@@ -48,7 +48,7 @@ steps:
     workingDirectory: $(Build.SourcesDirectory)/ansible
 
   ## ANSIBLE - run
-  - script: 
+  - script: |
       source venv/bin/activate
       ansible-playbook playbookdemo.yml -i inv.azure_rm.yml
     displayName: Ansible playbook
