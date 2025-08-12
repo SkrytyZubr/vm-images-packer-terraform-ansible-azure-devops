@@ -37,35 +37,16 @@ steps:
       ARM_TENANT_ID: $(ARM_TENANT_ID)
       ARM_ACCESS_KEY: $(ARM_ACCESS_KEY)
 
+  ## ANSIBLE
+  - script: pip install ansible[azure]==2.8.6
+    displayName:  Get requirements
 
-
-  ## ANSIBLE - venv
-  - script: |
-      sudo apt-get update -qq
-      sudo apt-get install -y python3-venv python3-pip
-      python3 -m venv venv
-      ./venv/bin/pip install --upgrade pip setuptools wheel
-      ./venv/bin/pip install -r requirements-azure.txt
-      ./venv/bin/pip install "ansible[azure]==2.8.6" --no-cache-dir
-    displayName: Get requirements
-    workingDirectory: $(Build.SourcesDirectory)/ansible
-
-  ## ANSIBLE - run
-  - script: |
-      source venv/bin/activate
-      ansible-playbook playbookdemo.yml -i inv.azure_rm.yml
-    displayName: Ansible playbook
+  - script: ansible-playbook playbookdemo.yml -i inv.azure_rm.yml
+    displayName:  Ansible playbook
     workingDirectory: $(Build.SourcesDirectory)/ansible
     env:
       AZURE_CLIENT_ID: $(ARM_CLIENT_ID)
-      AZURE_SECRET: $(ARM_CLIENT_SECRET)
+      AZURE_SECRET: $(ARM_SECRET)
       AZURE_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
-      AZURE_TENANT: $(ARM_TENANT_ID)
+      AZURE_TENANT: $(ARM_TENANT)
       ANSIBLE_HOST_KEY_CHECKING: False
-
-  - task: Bash@3
-    displayName: Terraform destroy on failure
-    condition: failed()
-    inputs:
-      targetType: inline
-      script: terraform destroy -auto-approve
