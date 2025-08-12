@@ -17,6 +17,7 @@ resource "azurerm_virtual_machine" "vm" {
   resource_group_name   = azurerm_resource_group.rg.name
   vm_size               = "Standard_DS2_v2"
   network_interface_ids = [azurerm_network_interface.nic.id]
+  delete_os_disk_on_termination = true
 
   ## USE THE CUSTOM IMAGE
   storage_image_reference {
