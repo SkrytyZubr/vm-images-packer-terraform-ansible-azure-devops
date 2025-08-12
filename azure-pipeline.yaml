@@ -56,3 +56,10 @@ steps:
       AZURE_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
       AZURE_TENANT: $(ARM_TENANT_ID)
       ANSIBLE_HOST_KEY_CHECKING: False
+
+  - task: Bash@3
+    displayName: Terraform destroy on failure
+    condition: failed()
+    inputs:
+      targetType: inline
+      script: terraform destroy -auto-approve
