@@ -4,13 +4,67 @@
   vars:
     ansible_user: book
     ansible_password: book123*
+    otel_version: "0.115.1"  # najnowsza wersja stable
+    azure_monitor_connection_string: "{{ lookup('env', 'AZURE_MONITOR_CONNECTION_STRING') }}"
   tasks:
 
-  - name: installing latest version of Ngnix
-    apt: 
-      name: nginx 
-      state: latest
-  - name: start nginx service
-    service: 
-      name: nginx 
-      state: started
+    - name: start nginx service
+      service: 
+        name: nginx 
+        state: started
+
+    - name: Install required dependencies
+      apt:
+        name:
+          - curl
+          - unzip
+        state: present
+        update_cache: true
+
+    - name: Download OpenTelemetry Collector
+      get_url:
+        url: "https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v{{ otel_version }}/otelcol-contrib_{{ otel_version }}_linux_amd64.deb"
+        dest: /tmp/otelcol-contrib.deb
+
+    - name: Install OpenTelemetry Collector
+      apt:
+        deb: /tmp/otelcol-contrib.deb
+
+    - name: Create OpenTelemetry config directory
+      file:
+        path: /etc/otelcol-contrib
+        state: directory
+        mode: '0755'
+
+    - name: Deploy OpenTelemetry Collector config for Azure Monitor
+      copy:
+        dest: /etc/otelcol-contrib/config.yaml
+        mode: '0644'
+        content: |
+          receivers:
+            otlp:
+              protocols:
+                http:
+                grpc:
+
+          exporters:
+            azuremonitor:
+              connection_string: "{{ azure_monitor_connection_string }}"
+
+          service:
+            pipelines:
+              metrics:
+                receivers: [otlp]
+                exporters: [azuremonitor]
+              logs:
+                receivers: [otlp]
+                exporters: [azuremonitor]
+              traces:
+                receivers: [otlp]
+                exporters: [azuremonitor]
+
+    - name: Enable and start OpenTelemetry Collector
+      systemd:
+        name: otelcol-contrib
+        enabled: true
+        state: restarted
