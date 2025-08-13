@@ -50,7 +50,8 @@ steps:
   - script: |
       python3 -m venv venv
       source venv/bin/activate
-      pip install ansible[azure]==2.8.6
+      pip install ansible[azure]
+      pip install azure-mgmt-compute azure-mgmt-network azure-mgmt-resource
     displayName:  Get requirements
 
   - script: ansible-playbook playbookdemo.yml -i inv.azure_rm.yml
