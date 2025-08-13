@@ -38,7 +38,7 @@ steps:
       ARM_ACCESS_KEY: $(ARM_ACCESS_KEY)
 
   - script: |
-      connection_string=$(terraform output -raw azure_monitor_connection_string)
+      connection_string=$(terraform output -raw app_insights_connection_string)
       echo "##vso[task.setvariable variable=AZURE_MONITOR_CONNECTION_STRING;issecret=true]$connection_string"
     displayName: Get Azure Monitor connection string
     workingDirectory: $(Build.SourcesDirectory)/terraform
