@@ -1,5 +1,5 @@
 ---
-- hosts: _webserver
+- hosts: webserver
   become: true
   vars:
     ansible_user: book
